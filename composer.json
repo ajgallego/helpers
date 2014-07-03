@@ -1,0 +1,25 @@
+{
+    "name": "ajgallego/helpers",
+    "description": "A collection of PHP helpers for Laravel",
+    "license": "BSD-3-Clause",
+    "keywords": ["laravel", "php", "helpers"], 
+    "authors": [
+        {
+            "name": "Javier Gallego",
+            "email": "ajgallego@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.1.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "Ajgallego\\Helpers\\": "src/"
+        }
+    },
+    "minimum-stability": "dev"
+}
