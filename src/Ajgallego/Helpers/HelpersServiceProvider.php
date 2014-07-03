@@ -32,9 +32,9 @@ class HelpersServiceProvider extends ServiceProvider {
 	{
 		$this->app->booting(function()
 		{
-		  $loader = \Illuminate\Foundation\AliasLoader::getInstance();
-		  $loader->alias('HelpDataView',    	'Ajgallego\Helpers\HelpDataView');
-		  $loader->alias('HelpActionButton',  	'Ajgallego\Helpers\HelpActionButton');
+			$loader = \Illuminate\Foundation\AliasLoader::getInstance();
+			$loader->alias('HelpDataView',    		'Ajgallego\Helpers\DataVisualization\HelpDataView');
+			$loader->alias('HelpActionButton',  	'Ajgallego\Helpers\HtmlGeneration\HelpActionButton');
 		});
 	}
 
