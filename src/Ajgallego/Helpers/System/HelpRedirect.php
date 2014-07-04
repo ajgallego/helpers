@@ -2,6 +2,8 @@
 
 namespace Ajgallego\Helpers\System;
 
+use Illuminate\Support\Facades\Redirect;
+
 /**
 * Helper class for redirections. 
 * Allows to add string errors and to show a notification. 
@@ -22,7 +24,7 @@ class HelpRedirect
     * Create a redirection to an url
     * @param string $url
     * @param string $params
-    * @return 
+    * @return Redirection
     */
     public static function to( $_url, $_params = null )
     {
@@ -33,7 +35,7 @@ class HelpRedirect
     * Create a redirection to an action
     * @param string $route
     * @param string $params
-    * @return 
+    * @return Redirection
     */
     public static function action( $_action, $_params = null )
     {
@@ -44,7 +46,7 @@ class HelpRedirect
     * Create a redirection to a route
     * @param string $route
     * @param string $params
-    * @return 
+    * @return Redirection
     */
     public static function route( $_route, $_params = null )
     {
@@ -52,18 +54,37 @@ class HelpRedirect
     }
 
     /**
-    * Create a redirection to an url
-    * @param string $route
-    * @param string $params
-    * @return 
+    * Show a success notification
+    * @param string $message to show
+    */
+    public function withSuccess( $_message )
+    {
+        self::prv_show_notification( 'success', $_message );
+    }
+
+    /**
+    * Redirect with errors
+    * @param string/array/messageBag/Validator $_errors
     */
     public function withErrors( $_errors )
     {
-        if( ! $_errors instanceof Illuminate\Support\MessageBag )
-        {
-            $errorsBag = new Illuminate\Support\MessageBag();
 
-            if( is_array( $_errors) )
+var_dump( $_errors );
+
+//dd($_errors);
+        if( $_errors instanceof \Illuminate\Support\MessageBag )
+        {
+            $errorsBag = $_errors;
+        }
+        elseif( $_errors instanceof \Illuminate\Validation\Validator )
+        {
+            $errorsBag = $_errors->getMessageBag();
+        }
+        else
+        {
+            $errorsBag = new \Illuminate\Support\MessageBag();
+
+            if( is_array( $_errors ) )
             {
                 foreach( $_errors as $k => $e )
                     $errorsBag->add( $k, $e );
@@ -71,21 +92,39 @@ class HelpRedirect
             else
                 $errorsBag->add( '', $_errors );
         }
-        else
-            $errorsBag = $_errors;
 
         return self::prv_redirect_with_errors( $errorsBag );
     }
 
     /**
+    * Show a notification of different types
+    */
+    private function prv_show_notification( $_notification_type, $_message )
+    {
+        if( $errorsBag->count() > 1 )
+        {
+            $strError = '<ul>';
+            foreach( $errorsBag as $e )
+            {
+                $strError .= '<li>'. $e .'</li>';
+            }
+            $strError .= '</ul>';
+        }
+        else
+            $strError = $errorsBag->first();
+
+        Notification::error( $strError );
+    }
+
+    /**
     * Construct the redirection
     */
-    private function prv_redirect_with_errors( $_errors )
+    private function prv_redirect_with_errors( \Illuminate\Support\MessageBag $errorsBag )
     {
-        $errorsBag = $_errors->all();
+        //$errorsBag = $_errors->all();
         $strError = '';
 
-        if( count( $errorsBag ) > 1 )
+        if( $errorsBag->count() > 1 )
         {
             $strError = '<ul>';
             foreach( $errorsBag as $e )
@@ -101,6 +140,6 @@ class HelpRedirect
 
         return $this->mRedirect
                        ->withInput()
-                       ->withErrors( $_errors );
+                       ->withErrors( $errorsBag );
     }
 }
