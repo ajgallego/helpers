@@ -5,6 +5,10 @@ namespace Ajgallego\Helpers\DataVisualization;
 use Illuminate\View\Compilers\BladeCompiler;
 use Ajgallego\Helpers\HtmlGeneration;
 
+/**
+* Creates a table to display data. 
+* Usually used on the show action of a resource.
+*/
 class HelpDataView
 {
 	private $mFields = array();

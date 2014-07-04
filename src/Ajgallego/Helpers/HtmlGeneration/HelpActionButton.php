@@ -5,6 +5,10 @@ namespace Ajgallego\Helpers\HtmlGeneration;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Form;
 
+/**
+* Helper to create actions buttons: show, create, edit, delete, back or custom buttons.
+* It also allows to create small buttons or to add styles, classes or attibutes.
+*/
 class HelpActionButton
 {
     private $mIcon           = '';
