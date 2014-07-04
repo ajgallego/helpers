@@ -33,10 +33,17 @@ class HelpersServiceProvider extends ServiceProvider {
 		$this->app->booting(function()
 		{
 			$loader = \Illuminate\Foundation\AliasLoader::getInstance();
+			
 			$loader->alias('HelpZip',    			'Ajgallego\Helpers\DataCompression\HelpZip');
 			$loader->alias('HelpZipStream',    		'Ajgallego\Helpers\DataCompression\HelpZipStream');
+			
 			$loader->alias('HelpDataView',    		'Ajgallego\Helpers\DataVisualization\HelpDataView');
+			
+			$loader->alias('HelpArray', 			'Ajgallego\Helpers\Datatypes\HelpArray');
+			$loader->alias('HelpString', 			'Ajgallego\Helpers\Datatypes\HelpString');
+			
 			$loader->alias('HelpActionButton',  	'Ajgallego\Helpers\HtmlGeneration\HelpActionButton');
+			
 			$loader->alias('HelpRedirect',  		'Ajgallego\Helpers\System\HelpRedirect');
 		});
 	}
