@@ -3,6 +3,7 @@
 namespace Ajgallego\Helpers\System;
 
 use Illuminate\Support\Facades\Redirect;
+use Krucas\Notification\Facades\Notification;
 
 /**
 * Helper class for redirections. 
@@ -68,10 +69,6 @@ class HelpRedirect
     */
     public function withErrors( $_errors )
     {
-
-var_dump( $_errors );
-
-//dd($_errors);
         if( $_errors instanceof \Illuminate\Support\MessageBag )
         {
             $errorsBag = $_errors;
