@@ -43,6 +43,7 @@ class HelpersServiceProvider extends ServiceProvider {
 			$loader->alias('HelpString', 			'Ajgallego\Helpers\Datatypes\HelpString');
 			
 			$loader->alias('HelpActionButton',  	'Ajgallego\Helpers\HtmlGeneration\HelpActionButton');
+			$loader->alias('HelpForm',  			'Ajgallego\Helpers\HtmlGeneration\HelpForm');
 			
 			$loader->alias('HelpRedirect',  		'Ajgallego\Helpers\System\HelpRedirect');
 		});
