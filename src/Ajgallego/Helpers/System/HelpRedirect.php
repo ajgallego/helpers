@@ -55,88 +55,98 @@ class HelpRedirect
     }
 
     /**
-    * Show a success notification
-    * @param string $message to show
+    * Redirect with success message
+    * @param string/array/messageBag/Validator/array $message to show
     */
     public function withSuccess( $_message )
     {
-        self::prv_show_notification( 'success', $_message );
+        $messageBag = self::prv_buildMessageBag( $_message );
+        return self::prv_redirect( 'success', $messageBag );
+    }
+
+    /**
+    * Redirect with info message
+    * @param string/array/messageBag/Validator $message to show
+    */
+    public function withInfo( $_message )
+    {
+        $messageBag = self::prv_buildMessageBag( $_message );
+        return self::prv_redirect( 'info', $messageBag );
+    }
+
+    /**
+    * Redirect with warning message
+    * @param string/array/messageBag/Validator $message to show
+    */
+    public function withWarning( $_message )
+    {
+        $messageBag = self::prv_buildMessageBag( $_message );
+        return self::prv_redirect( 'warning', $messageBag );
     }
 
     /**
     * Redirect with errors
-    * @param string/array/messageBag/Validator $_errors
+    * @param string/array/messageBag/Validator $_errors to show
     */
     public function withErrors( $_errors )
     {
-        if( $_errors instanceof \Illuminate\Support\MessageBag )
-        {
-            $errorsBag = $_errors;
-        }
-        elseif( $_errors instanceof \Illuminate\Validation\Validator )
-        {
-            $errorsBag = $_errors->getMessageBag();
-        }
-        else
-        {
-            $errorsBag = new \Illuminate\Support\MessageBag();
-
-            if( is_array( $_errors ) )
-            {
-                foreach( $_errors as $k => $e )
-                    $errorsBag->add( $k, $e );
-            }
-            else
-                $errorsBag->add( '', $_errors );
-        }
-
-        return self::prv_redirect_with_errors( $errorsBag );
+        $errorsBag = self::prv_buildMessageBag( $_errors );
+        return self::prv_redirect( 'error', $errorsBag );
     }
 
     /**
-    * Show a notification of different types
+    * Construct the message bag from different inputs
     */
-    private function prv_show_notification( $_notification_type, $_message )
+    private function prv_buildMessageBag( $_messages )
     {
-        if( $errorsBag->count() > 1 )
+        if( $_messages instanceof \Illuminate\Support\MessageBag )
         {
-            $strError = '<ul>';
-            foreach( $errorsBag as $e )
-            {
-                $strError .= '<li>'. $e .'</li>';
-            }
-            $strError .= '</ul>';
+            $messagesBag = $_messages;
+        }
+        elseif( $_messages instanceof \Illuminate\Validation\Validator )
+        {
+            $messagesBag = $_messages->getMessageBag();
         }
         else
-            $strError = $errorsBag->first();
+        {
+            $messagesBag = new \Illuminate\Support\MessageBag();
 
-        Notification::error( $strError );
+            if( is_array( $_messages ) )
+            {
+                foreach( $_messages as $k => $m )
+                    $messagesBag->add( $k, $m );
+            }
+            else
+                $messagesBag->add( '', $_messages );
+        }
+
+        return $messagesBag;
     }
 
     /**
     * Construct the redirection
     */
-    private function prv_redirect_with_errors( \Illuminate\Support\MessageBag $errorsBag )
+    private function prv_redirect( $type, \Illuminate\Support\MessageBag $messagesBag )
     {
-        //$errorsBag = $_errors->all();
-        $strError = '';
+        $strMessages = '';
 
-        if( $errorsBag->count() > 1 )
+        if( $messagesBag->count() > 1 )
         {
-            $strError = '<ul>';
-            foreach( $errorsBag as $e )
+            $strMessages = '<ul>';
+            foreach( $messagesBag as $e )
             {
-                $strError .= '<li>'. $e .'</li>';
+                $strMessages .= '<li>'. $e .'</li>';
             }
-            $strError .= '</ul>';
+            $strMessages .= '</ul>';
         }
         else
-            $strError = $errorsBag->first();
+            $strMessages = $messagesBag->first();
 
-        Notification::error( $strError );
+        Notification::$type( $strMessages );
 
-        return $this->mRedirect
-                       ->withInput()
-                       ->withErrors( $errorsBag );
+        if( $type == 'error' )
+            return $this->mRedirect->withInput()->withErrors( $messagesBag );
+        else
+            return $this->mRedirect;
     }
 }
