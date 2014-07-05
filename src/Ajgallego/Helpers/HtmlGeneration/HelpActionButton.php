@@ -197,4 +197,30 @@ class HelpActionButton
                .'</a>'
                .$strSufix;
     }
+
+    /*
+
+        if( $this->mIsDeleteButton )
+        {
+            return Form::open( array('url' => $this->mDataUri, 
+                                     //'route' => array( $action .'.destroy', $item->id), 
+                                     'method' => 'delete', 
+                                     'data-confirm' => trans('forms.confirm_delete') ) )
+
+                    .   '<button type="submit" href="'. $this->mDataUri 
+                    .       '" class="'. implode(' ', $this->mClasses) .'" title="Eliminar">'
+                    .       $strLabel
+                    .   '</button>'
+                    . Form::close();
+
+
+            $strPrefix = Form::open(array('method'=>'delete', 
+                                    'url' => $this->mDataUri, 
+                                    //'data-confirm' => , 
+                                    'style'=>'display:inline!important;'));
+            $strSufix = Form::close();
+            $this->mAttributes[] = 'onclick="if(confirm(\''.trans('forms.confirm_delete').'\')) {'
+                                   . 'parentNode.submit(); } return false;"';
+        }
+    */
 }
