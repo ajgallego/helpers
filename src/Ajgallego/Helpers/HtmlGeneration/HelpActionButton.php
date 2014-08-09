@@ -1,7 +1,6 @@
 <?php 
 
 namespace Ajgallego\Helpers\HtmlGeneration;
-
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Form;
 

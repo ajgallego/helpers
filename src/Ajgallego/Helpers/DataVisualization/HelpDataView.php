@@ -1,7 +1,6 @@
 <?php 
 
 namespace Ajgallego\Helpers\DataVisualization;
-
 use Illuminate\View\Compilers\BladeCompiler;
 use Ajgallego\Helpers\HtmlGeneration;
 
