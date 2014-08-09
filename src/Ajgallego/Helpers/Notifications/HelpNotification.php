@@ -1,6 +1,5 @@
-<?php 
+<?php namespace Ajgallego\Helpers\Notifications;
 
-namespace Ajgallego\Helpers\Notifications;
 use Illuminate\Support\Facades\Session;
 
 class HelpNotification 

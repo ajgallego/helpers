@@ -1,6 +1,5 @@
-<?php 
+<?php namespace Ajgallego\Helpers\System;
 
-namespace Ajgallego\Helpers\System;
 use Illuminate\Support\Facades\Redirect;
 use Krucas\Notification\Facades\Notification;
 

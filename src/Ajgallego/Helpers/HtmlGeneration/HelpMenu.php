@@ -1,6 +1,5 @@
-<?php 
+<?php namespace Ajgallego\Helpers\HtmlGeneration;
 
-namespace Ajgallego\Helpers\HtmlGeneration;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
 

@@ -1,6 +1,4 @@
-<?php 
-
-namespace Ajgallego\Helpers\Datatypes;
+<?php namespace Ajgallego\Helpers\Datatypes;
 
 /**
 * String helper class

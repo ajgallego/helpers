@@ -1,6 +1,4 @@
-<?php 
-
-namespace Ajgallego\Helpers;
+<?php namespace Ajgallego\Helpers;
 
 use Illuminate\Support\ServiceProvider;
 

@@ -1,6 +1,5 @@
-<?php 
+<?php namespace Ajgallego\Helpers\HtmlGeneration;
 
-namespace Ajgallego\Helpers\HtmlGeneration;
 use Illuminate\Support\Facades\Form;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Session;
