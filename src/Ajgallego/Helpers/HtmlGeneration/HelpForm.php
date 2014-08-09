@@ -1,8 +1,9 @@
 <?php 
 
 namespace Ajgallego\Helpers\HtmlGeneration;
-
 use Illuminate\Support\Facades\Form;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Session;
 
 class HelpForm
 {
@@ -82,7 +83,9 @@ class HelpForm
         return self::prv_printField( $name, $label, $strField, $isRequired, $helpText );
     }
 
-	//-------------------------------------------------------------------------
+	/**
+    * Adds a multiselect field. It uses the chosen library.
+    */
     public static function multiselect( $name, $label, $options, $selected = '', 
                                         $isRequired=false, $placeholder = '', $helpText='' ) 
     {
@@ -91,6 +94,7 @@ class HelpForm
                           Input::old( $name, $selected ),
                           array( 'multiple' => 'true', 
                                  'data-rel' => 'chosen', 
+                                 'class' => 'form-control', 
                                  'data-placeholder' => $placeholder
                                  //'required' => ( $isRequired ? 'true' : 'false') // error when submit
                                  ) );
