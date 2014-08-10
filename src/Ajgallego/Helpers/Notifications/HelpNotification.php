@@ -19,21 +19,21 @@ class HelpNotification
                                           'info'    => 'fa-info-circle' ];
 
 	/**
-     * Generic calls to Add a notification
+     * Generic calls to Add and Show notifications
      */
     public static function __callStatic( $_method, $_arguments )
     {
-    	if( count($_arguments) == 1 && in_array( $_method, self::$mNotificationsTypes ) )
-        {
-            return self::prv_add( $_method, $_arguments[0] );
-        }
-        else if( count($_arguments) == 0 && $_method == 'show' )
+    	if( count($_arguments) == 0 && $_method == 'show' )
         {
             return self::prv_show();
         }
+        else if( count($_arguments) == 1 && in_array( $_method, self::$mNotificationsTypes ) )
+        {
+            return self::prv_add( $_method, $_arguments[0] );
+        }
         else
         {
-			throw new \Exception("HelpNotification Error: Unknown method.", 1);
+			throw new \Exception("HelpNotification Error: Unknown method or wrong number of arguments.", 1);
         }
     }
 
