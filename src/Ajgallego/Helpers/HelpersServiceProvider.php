@@ -32,21 +32,28 @@ class HelpersServiceProvider extends ServiceProvider {
 		{
 			$loader = \Illuminate\Foundation\AliasLoader::getInstance();
 			
-			$loader->alias('HelpZip',    			'Ajgallego\Helpers\DataCompression\HelpZip');
-			$loader->alias('HelpZipStream',    		'Ajgallego\Helpers\DataCompression\HelpZipStream');
+			// Data compression
+			$loader->alias('HelpZip',    				'Ajgallego\Helpers\DataCompression\HelpZip');
+			$loader->alias('HelpZipStream',    			'Ajgallego\Helpers\DataCompression\HelpZipStream');
 			
-			$loader->alias('HelpDataView',    		'Ajgallego\Helpers\DataVisualization\HelpDataView');
+			// Data visualization
+			$loader->alias('HelpDataView',    			'Ajgallego\Helpers\DataVisualization\HelpDataView');
 			
-			$loader->alias('HelpArray', 			'Ajgallego\Helpers\Datatypes\HelpArray');
-			$loader->alias('HelpString', 			'Ajgallego\Helpers\Datatypes\HelpString');
+			// Datatypes
+			$loader->alias('HelpArray', 				'Ajgallego\Helpers\Datatypes\HelpArray');
+			$loader->alias('HelpString', 				'Ajgallego\Helpers\Datatypes\HelpString');
 			
-			$loader->alias('HelpActionButton',  	'Ajgallego\Helpers\HtmlGeneration\HelpActionButton');
-			$loader->alias('HelpForm',  			'Ajgallego\Helpers\HtmlGeneration\HelpForm');
-			$loader->alias('HelpMenu',  			'Ajgallego\Helpers\HtmlGeneration\HelpMenu');
+			// Html generation
+			$loader->alias('HelpActionButton',  		'Ajgallego\Helpers\HtmlGeneration\HelpActionButton');
+			$loader->alias('HelpForm',  				'Ajgallego\Helpers\HtmlGeneration\HelpForm');
+			$loader->alias('HelpMenu',  				'Ajgallego\Helpers\HtmlGeneration\HelpMenu');
 
-			$loader->alias('HelpNotification',		'Ajgallego\Helpers\Notifications\HelpNotification');
+			// Notifications
+			$loader->alias('HelpNotification',			'Ajgallego\Helpers\Notifications\HelpNotification');
+			$loader->alias('HelpPersistentNotification','Ajgallego\Helpers\Notifications\HelpPersistentNotification');
 			
-			$loader->alias('HelpRedirect',  		'Ajgallego\Helpers\System\HelpRedirect');
+			// System
+			$loader->alias('HelpRedirect',  			'Ajgallego\Helpers\System\HelpRedirect');
 		});
 	}
 

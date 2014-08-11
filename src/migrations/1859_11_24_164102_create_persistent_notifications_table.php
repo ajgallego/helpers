@@ -26,8 +26,8 @@ class CreatePersistentNotificationsTable extends Migration {
 	        $table->boolean('seen')->default(false);
 	        $table->timestamps();
 
-	        $table->foreign('user_id')		 // assumes a users table
-      			  ->references('id')->on('users')
+	        $table->foreign('user_id')		 
+      			  ->references('id')->on('users')	// assumes a users table
       			  ->onDelete('cascade');
         });
 	}

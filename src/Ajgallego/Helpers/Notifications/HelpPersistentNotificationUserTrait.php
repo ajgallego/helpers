@@ -9,6 +9,6 @@ trait HelpPersistentNotificationUserTrait
     {
     	// TODO Review route 'Ajgallego\Helpers\Notifications\PersistentNotification'
     	// Review 'models\PersistentNotification'
-        return $this->hasMany('Ajgallego\Helpers\Notifications\PersistentNotification');
+        return $this->hasMany('\PersistentNotification');
     }
 }
