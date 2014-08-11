@@ -29,8 +29,8 @@ class CreateRolesTables extends Migration {
             $table->integer('user_id')->unsigned();
             $table->integer('role_id')->unsigned();
             
-            $table->foreign('user_id')->references('id')->on('{{ Config::get('auth.table') }}')
-                ->onUpdate('cascade')->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')
+                  ->onUpdate('cascade')->onDelete('cascade');
 
             $table->foreign('role_id')->references('id')->on('roles');
         });
