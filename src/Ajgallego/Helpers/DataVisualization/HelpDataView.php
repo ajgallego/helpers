@@ -9,10 +9,11 @@ use Ajgallego\Helpers\HtmlGeneration;
 */
 class HelpDataView
 {
-	private $mFields = array();
-	private $mButtons = '';
-	private $mDataUri = '';
-	private $mDataId = '';
+	private $mFields       = array();
+    private $mGroupClasses = array();
+	private $mButtons      = '';
+	private $mDataUri      = '';
+	private $mDataId       = '';
 
 	/**
 	* Private dataview constructor
@@ -34,6 +35,16 @@ class HelpDataView
 	{
 		return new HelpDataView( $_data_uri, $_resource_id );
 	}
+
+    /**
+     * Add a class/es to the dataView group
+     * @param string $class Class to add
+     */
+    public function addGroupClass( $_class )
+    {
+        $this->mGroupClasses[] = $_class;
+        return $this; 
+    }
 
 	/**
 	 * Add a value to the dataview
@@ -142,7 +153,7 @@ class HelpDataView
 	*/
 	public function getView()
 	{
-		$str = '<table class="table table-bordered table-detail">'; 
+		$str = '<table class="table table-bordered table-detail '. implode(' ', $this->mGroupClasses) .'">'; 
 
 		foreach( $this->mFields as $key => $fieldValue )
 		{
