@@ -6,7 +6,12 @@ use Illuminate\Support\Facades\URL;
 class HelpMenu
 {
 	/**
-	* Build the navigation menu from an array. 
+	* Build a navigation menu from an array with the following structure: <br/>
+	* $navbar = array( <br/>
+	*		['url'=>'url',           'textkey'=>'public.title', 'nopattern' => true ], <br/>
+	*		['url'=>'url/products',  'textkey'=>'public.products.title' ], <br/>
+	*		['url'=>'url/clients',   'textkey'=>'public.clients.title', 'icon' => 'fa-users' ], <br/>
+	*);
 	*/
 	public static function build( array $_menu, $_currentLocale = '', $_addItemClass = '' )
 	{

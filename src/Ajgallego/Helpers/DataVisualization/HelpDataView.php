@@ -1,6 +1,7 @@
 <?php namespace Ajgallego\Helpers\DataVisualization;
 
 use Illuminate\View\Compilers\BladeCompiler;
+use Illuminate\Support\Facades\URL;
 use Ajgallego\Helpers\HtmlGeneration;
 
 /**
@@ -104,7 +105,7 @@ class HelpDataView
      */
     public function addButtonModify( $_addClass='' )
     {
-		$this->mButtons .= \HelpActionButton::edit($this->mDataUri, $this->mDataId)
+		$this->mButtons .= \HelpActionButton::edit( \URL::route( $this->mDataUri.'.edit', $this->mDataId ) )
                            ->addStyle('margin-right:10px')
                            ->addClass($_addClass);
 		return $this;
@@ -116,7 +117,7 @@ class HelpDataView
      */
     public function addButtonDelete( $_addClass='' )
     {
-        $this->mButtons .= \HelpActionButton::delete($this->mDataUri, $this->mDataId)
+        $this->mButtons .= \HelpActionButton::delete( \URL::route( $this->mDataUri.'.destroy', $this->mDataId ) )
                            ->addStyle('margin-right:10px')
                            ->addClass($_addClass);
 		return $this;
@@ -128,7 +129,7 @@ class HelpDataView
      */
     public function addButtonReturn( $_addClass='' )
     {
-		$this->mButtons .= \HelpActionButton::back($this->mDataUri)
+		$this->mButtons .= \HelpActionButton::back( \URL::route( $this->mDataUri.'.index' ) )
                            ->addStyle('margin-right:10px')
                            ->addClass($_addClass);
 		return $this;
@@ -141,7 +142,7 @@ class HelpDataView
      */
     public function addButtonCustom( $_icon, $_label, $_uri, $_addClass='' )
     {
-		$this->mButtons .= \HelpActionButton::custom($_icon, $_label, $_uri)
+		$this->mButtons .= \HelpActionButton::custom( $_icon, $_label, $_uri )
                            ->addStyle('margin-right:10px')
                            ->addClass($_addClass);
 		return $this;

@@ -1,6 +1,5 @@
 <?php namespace Ajgallego\Helpers\HtmlGeneration;
 
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Form;
 
 /**
@@ -38,13 +37,12 @@ class HelpActionButton
     /**
     * Create a show button
     * @param string $data_uri Used to generate the edit, delete and return buttons
-    * @param integer $resource_id Used to generate the edit and delete buttons
     */
-    public static function show( $_data_uri, $_resource_id )
+    public static function show( $_data_uri )
     {
         return new HelpActionButton( '<i class="fa fa-eye"></i>', 
                                      trans('forms.actions.show'), 
-                                     URL::route( $_data_uri .'.show', $_resource_id ), 
+                                     $_data_uri, 
                                      'btn btn-success' );
     }
 
@@ -56,35 +54,33 @@ class HelpActionButton
     {
         return new HelpActionButton( '<i class="fa fa-plus-circle"></i>',
                                      trans('forms.actions.create'), 
-                                     URL::route( $_data_uri .'.create'), 
+                                     $_data_uri, 
                                      'btn btn-success' );
     }
 
     /**
     * Create an edit button
     * @param string $data_uri Used to generate the edit, delete and return buttons
-    * @param integer $resource_id Used to generate the edit and delete buttons
     */
-    public static function edit( $_data_uri, $_resource_id )
+    public static function edit( $_data_uri )
     {
         return new HelpActionButton( '<i class="fa fa-pencil"></i>', 
                                      trans('forms.actions.edit'), 
-                                     URL::route( $_data_uri .'.edit', $_resource_id ), 
+                                     $_data_uri, 
                                      'btn btn-success' );
     }
 
     /**
     * Create a delete button
     * @param string $data_uri Used to generate the edit, delete and return buttons
-    * @param integer $resource_id Used to generate the edit and delete buttons
     */
-    public static function delete( $_data_uri, $_resource_id )
+    public static function delete( $_data_uri )
     {
         return new HelpActionButton( '<i class="fa fa-trash-o"></i>', 
                                      trans('forms.actions.delete'), 
-                                     URL::route( $_data_uri .'.destroy', $_resource_id ), 
+                                     $_data_uri, 
                                      'btn btn-danger', 
-                                     true ); // is delete button
+                                     true ); // is a delete button
     }
 
     /**
@@ -95,7 +91,7 @@ class HelpActionButton
     {
         return new HelpActionButton( '<i class="fa fa-chevron-left"></i>', 
                                      trans('forms.actions.return'), 
-                                     URL::route( $_data_uri .'.index' ), 
+                                     $_data_uri, 
                                      'btn btn-default' );
     }
 
@@ -114,12 +110,11 @@ class HelpActionButton
     }
 
     /** 
-     * Set small button
-     * @param boolean $_value Set small buttons. Default true.
+     * Set small button (by default buttons have regular size)
      */
-    public function small( $_value = true )
+    public function small()
     {
-        $this->mSmall = $_value;
+        $this->mSmall = true;
         $this->mClasses[] = 'btn-xs';
         return $this;
     }
@@ -175,8 +170,7 @@ class HelpActionButton
         {
             $strPrefix = Form::open(array('method'=>'delete', 
                                     'url' => $this->mDataUri, 
-                                    //'data-confirm' => , 
-                                    'style'=>'display:inline!important;'));
+                                    'style'=>'display:inline!important;padding:0px;margin:0px'));
             $strSufix = Form::close();
             $this->mAttributes[] = 'onclick="if(confirm(\''.trans('forms.confirm_delete').'\')) {'
                                    . 'parentNode.submit(); return true;'
@@ -195,30 +189,4 @@ class HelpActionButton
                .'</a>'
                .$strSufix;
     }
-
-    /*
-
-        if( $this->mIsDeleteButton )
-        {
-            return Form::open( array('url' => $this->mDataUri, 
-                                     //'route' => array( $action .'.destroy', $item->id), 
-                                     'method' => 'delete', 
-                                     'data-confirm' => trans('forms.confirm_delete') ) )
-
-                    .   '<button type="submit" href="'. $this->mDataUri 
-                    .       '" class="'. implode(' ', $this->mClasses) .'" title="Eliminar">'
-                    .       $strLabel
-                    .   '</button>'
-                    . Form::close();
-
-
-            $strPrefix = Form::open(array('method'=>'delete', 
-                                    'url' => $this->mDataUri, 
-                                    //'data-confirm' => , 
-                                    'style'=>'display:inline!important;'));
-            $strSufix = Form::close();
-            $this->mAttributes[] = 'onclick="if(confirm(\''.trans('forms.confirm_delete').'\')) {'
-                                   . 'parentNode.submit(); } return false;"';
-        }
-    */
 }
