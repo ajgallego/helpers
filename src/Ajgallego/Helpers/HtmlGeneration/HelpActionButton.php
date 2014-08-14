@@ -19,6 +19,9 @@ class HelpActionButton
     private $mSmall          = false;
     private $mIsDeleteButton = false;
 
+    private $mConfirmation   = false;
+    private $mConfirmationMessage = ''; 
+
 
     /**
     * Private action button constructor
@@ -76,11 +79,11 @@ class HelpActionButton
     */
     public static function delete( $_data_uri )
     {
-        return new HelpActionButton( '<i class="fa fa-trash-o"></i>', 
+        return (new HelpActionButton( '<i class="fa fa-trash-o"></i>', 
                                      trans('forms.actions.delete'), 
                                      $_data_uri, 
                                      'btn btn-danger', 
-                                     true ); // is a delete button
+                                     true ));
     }
 
     /**
@@ -150,6 +153,26 @@ class HelpActionButton
     }
 
     /** 
+     * Enable confirmation dialog before button action (by default it is disabled)
+     * @param string $_message Optional parameter, allows to change the confirmation message
+     */
+    public function enableConfirmation( $_message = '' )
+    {
+        $this->mConfirmation = true;
+        $this->mConfirmationMessage = ( $_message == '' ? trans('forms.confirm_default') : $_message );
+        return $this; 
+    }
+
+    /** 
+     * Disable confirmation dialog (by default it is disabled)
+     */
+    public function disableConfirmation()
+    {
+        $this->mConfirmation = false;
+        return $this; 
+    }
+
+    /** 
     * Generate the button
     * @return string dataview
     */
@@ -172,9 +195,28 @@ class HelpActionButton
                                     'url' => $this->mDataUri, 
                                     'style'=>'display:inline!important;padding:0px;margin:0px'));
             $strSufix = Form::close();
-            $this->mAttributes[] = 'onclick="if(confirm(\''.trans('forms.confirm_delete').'\')) {'
-                                   . 'parentNode.submit(); return true;'
-                                   . '} else { return false; }"';
+
+            $this->enableConfirmation( trans('forms.confirm.text_delete') );
+        }
+
+        if( $this->mConfirmation )
+        {
+            $dialogTitle = trans('forms.confirm.title');
+            $dialogMessage = $this->mConfirmationMessage;
+            $dialogButtonOk = trans('forms.confirm.button_confirm');
+            $dialogButtonCancel = trans('forms.confirm.button_cancel');
+            $dialogAction = ( $this->mIsDeleteButton ? 'parentNode.submit()' : 'window.location.href=\'$this->mDataUri\'' );
+            $dialog = <<<EOD
+                BootstrapDialog.show({ 
+                    title:'$dialogTitle', message:'$dialogMessage', type:BootstrapDialog.TYPE_DEFAULT, 
+                    buttons: [                        
+                        {label:'$dialogButtonCancel', action:function(dialog){dialog.close();}}, 
+                        {label:'$dialogButtonOk', cssClass:'btn-primary', action:function(dialog){ $dialogAction; dialog.close();}}, 
+                    ]
+                });
+EOD;
+            $this->mAttributes[] = 'onclick="'. trim( $dialog ) .'"';
+            $this->mDataUri = '#';
         }
 
         return $strPrefix
