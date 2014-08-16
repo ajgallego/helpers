@@ -54,6 +54,13 @@ class HelpersServiceProvider extends ServiceProvider {
 			
 			// System
 			$loader->alias('HelpRedirect',  			'Ajgallego\Helpers\System\HelpRedirect');
+			$loader->alias('HelpUUID',  				'Ajgallego\Helpers\System\HelpUUID');
+
+			// User and Roles
+			$loader->alias('HelpUser',		  			'Ajgallego\Helpers\User\HelpUser');
+			$loader->alias('HelpUserModel',	  			'Ajgallego\Helpers\User\HelpUserModel');
+			$loader->alias('HelpRoleModel',	  			'Ajgallego\Helpers\User\HelpRoleModel');
+
 		});
 	}
 
