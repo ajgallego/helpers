@@ -1,19 +1,34 @@
-<?php namespace Ajgallego\Helpers\Datatypes;
+<?php namespace Ajgallego\Helpers\System;
 
 /**
-* UUID
-*
+* UUID<br/>
 * Generate a Universally Unique Identifier
 */
-class HelpUUID {
+class HelpUUID 
+{
+    /**
+     * Generates a UUID v2
+     * @return string
+     */
+    protected function v2()
+    {
+        return md5( uniqid(mt_rand(), true) );
+    }
 
-/**
-* Generate a UUID v4
-*
-* The UUID is 36 characters with dashes, 32 characters without.
-*
-* @return string E.g. 67f71e26-6d76-4d6b-9b6b-944c28e32c9d
-*/
+    /**
+    * Returns a random hash
+    */
+    public static function generateRandomHashedKey( $_baseKey = '' ) 
+    {
+        return sha1( $_baseKey . uniqid(mt_rand(), true) . time() );
+    }
+
+    /**
+    * Generate a UUID v4<br/>
+    * The UUID is 36 characters with dashes, 32 characters without.
+    * @param bool $dashes Optional parameter (default true). If true add dashes to the generated UUID
+    * @return string E.g. 67f71e26-6d76-4d6b-9b6b-944c28e32c9d
+    */
     public static function v4($dashes = true)
     {
         if ($dashes)

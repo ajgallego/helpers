@@ -6,14 +6,6 @@
 class HelpString
 {
     /**
-    * Returns a random hash
-    */
-    public static function getRandomHashedKey( $_baseKey = '' ) 
-    {
-    	return sha1( $_baseKey . uniqid(mt_rand(), true) . time() );
-    }
-
-    /**
     * Test if a string (haystack) starts with a substring (needle)
     */
     public static function startsWith( $_haystack, $_needle )
