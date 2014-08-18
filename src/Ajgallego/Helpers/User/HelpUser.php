@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 
 class HelpUser
@@ -87,13 +89,11 @@ class HelpUser
 
     /**
      * Checks if the credentials has been throttled by too much failed login attempts
-     * @param mixed $identity The login identity.
+     * @param string $loginAttribute The login identity.
      * @return boolean True if the identity has reached the throttle_limit.
      */
-    public static function isThrottled( array $identity )
+    public static function isThrottled( $loginAttribute )
     {
-      	$loginAttribute = self::prv_extractIdentityFromArray( $identity );
-
         // Get the current count (but not increments it)
         $count = self::prv_countThrottle( $loginAttribute, 0 );
 
@@ -101,50 +101,26 @@ class HelpUser
     }
 
     /**
-     * Checks if the given credentials correponds to a user that exists but
-     * is not confirmed
-     * @param array $credentials Array containing the credentials (email/username and password)
+     * Checks if the given credentials correponds to a user that exists but is not confirmed
+     * @param string $loginAttribute user identity (email/username)
      * @return boolean True if exists but is not confirmed
      */
-    public static function existsButNotConfirmed( array $identity )
+    public static function existsButNotConfirmed( $loginAttribute )
     {
-        $loginAttribute = self::prv_extractIdentityFromArray( $identity );
-
         $user = self::getUserByIdentity( $loginAttribute );
 
         if ($user) 
         {
-            return ( ! $user->confirmed );
+        	$correctPassword = Hash::check(
+                isset( $identity['password']) ? $identity['password'] : null,
+                $user->password
+            );
+
+            return ( ! $user->confirmed && $correctPassword );
         }
 
         return false;
     }
-
-    /**
-     * Register a new account with the given parameters
-     * @param array $input Array containing the user data as the login attribute, password, etc.
-     * @return User object that may or may not be saved successfully. Check the id to make sure.
-     */
-/*    public static function register( array $input )
-    {
-    	$login_attribute = Config::get('helpers::auth.login_attribute');
-
-        $user = new \HelpUserModel;
-        $user->{$login_attribute} = isset( $input[$login_attribute] ) ? $input[$login_attribute] : ''; 
-        $user->password = array_get($input, 'password');
-
-        // The password confirmation will be removed from model before saving. 
-        // This field will be used in Ardent's auto validation.
-        $user->password_confirmation = array_get($input, 'password_confirmation');
-
-        // Generate a random confirmation code
-        $user->confirmation_code     = self::prv_generateToken();
-
-        // Save if valid. Password field will be hashed before save
-        $user->save();
-
-        return $user;
-    }*/
 
 	/**
      * Sets the 'confirmed' field of the user with the matching code to true.
@@ -155,7 +131,7 @@ class HelpUser
     {
     	$user = \HelpUserModel::where( 'confirmation_code', '=', $code )->get()->first();
 
-        if ($user) {
+        if( $user ) {
             return $user->confirm();
         } else {
             return false;
@@ -196,27 +172,21 @@ class HelpUser
 
         \DB::table('password_reminders')->insert( $values );
 
-//TODO......................................................................................
-        $view = Config::get('helpers::auth.email_reset_password');
+		$view_name = \Config::get('helpers::auth.email_reset_password');
 
-        $this->sendEmail($user, $token); //???
-        $this->sendEmail( 'helpers::auth.email.password_reset.subject', 
-        				  $view, array('user'=>$this, 'token'=>$token) );
+        Mail::send(
+            $view_name,
+            compact('user', 'token'),
+            function ($message) use ($email) {
+                $message
+                    ->to( $email )
+                    ->subject( Lang::get('helpers::auth.email.password_reset.subject') );
+            }
+        );
 
-        return true;
-    }
 //TODO......................................................................................
-     /**
-     * Sends an email containing the reset password link with the
-     * given token to the user.
-     *
-     * @param RemindableInterface $user  An existent user.
-     * @param string              $token Password reset token.
-     *
-     * @return void
-     */
-    private static function prv_sendEmailOfResetPassword($user, $token)
-    {
+// REVISAR SI HACERLO CON UNA COLA
+/*
         $this->app['mailer']->queueOn(
             \Config::get('helpers::email_queue'),
             \Config::get('helpers::email_reset_password'),
@@ -226,8 +196,12 @@ class HelpUser
                     ->to($user->email, $user->username)
                     ->subject( trans('helpers::confide.email.password_reset.subject'));
             }
-        );
+        );*/
+
+        return true;
     }
+
+
 //TODO......................................................................................
     /**
      * Send email using the lang sentence as subject and the viewname
@@ -261,6 +235,7 @@ class HelpUser
      */
     public function resetPassword( $params )
     {
+//TODO......................................................................................
         $password = array_get($params, 'password', '');
         $passwordConfirmation = array_get($params, 'password_confirmation', '');
 
@@ -286,6 +261,34 @@ class HelpUser
             return false;
         }
     }
+
+    /**
+     * Resets a password of a user. The $input['token'] will tell which user.
+     *
+     * @param  array $input Array containing 'token', 'password' and 'password_confirmation' keys.
+     *
+     * @return  boolean Success
+     */
+/*    public function resetPassword($input)
+    {
+//TODO......................................................................................
+        $result = false;
+        $user   = Confide::userByResetPasswordToken($input['token']);
+
+        if ($user) {
+            $user->password              = $input['password'];
+            $user->password_confirmation = $input['password_confirmation'];
+            $result = $this->save($user);
+        }
+
+        // If result is positive, destroy token
+        if ($result) {
+            Confide::destroyForgotPasswordToken($input['token']);
+        }
+
+        return $result;
+    }
+*/
 
     /**
      * Delete the record of the given token from 'password_reminders' table.
