@@ -30,19 +30,6 @@ class HelpUserModel extends Ardent implements UserInterface
     }
 
     /**
-     * Confirm that the user email is valid.
-     * @return bool
-     */
-    public function confirm()
-    {
-        $rules = static::$rules;
-        $rules = array_diff(array_keys($rules), array('password_confirmation'));
-
-        $this->confirmed = true;
-        return $this->updateUniques( $rules );
-    }
-
-    /**
      * Overwrites the original save method 
      * @return User object
      */
@@ -65,19 +52,19 @@ class HelpUserModel extends Ardent implements UserInterface
 
         if( $this->errors()->isEmpty() && ! $this->confirmed && \Config::get('helpers::auth.signup_email') == true )
         {
-            $view_name = \Config::get('helpers::auth.email_account_confirmation');
             $user = $this;
 
+//TODO use Mail::queue o Mail::queueOn 
             Mail::send(
-                $view_name,
-                compact('user'),
+//                Config::get('helpers::auth.email_queue_name'),                // Queue name
+                Config::get('helpers::auth.email_view_account_confirmation'), // Email view name
+                compact('user'),                                              // Email data
                 function ($message) use ($user) {
                     $message
                         ->to( $user->email )
                         ->subject( Lang::get('helpers::auth.email.account_confirmation.subject') );
                 }
             );
-
         }
 
         return $status;

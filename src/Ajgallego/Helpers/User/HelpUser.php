@@ -49,15 +49,15 @@ class HelpUser
     /**
      * Attempt to log a user into the application with password and
      * identity field(s), usually email or username.
-     * @param array $input           Array containing at least 'username' or 'email' and 'password'.
+     * @param array $credentials     Array containing at least 'username' or 'email' and 'password'.
      *                               Optionally the 'remember' boolean.
      * @param bool  $mustBeConfirmed If true, the user must have confirmed his email account in order to log-in.
      * @return bool Success.
      */
-    public static function login(array $input, $mustBeConfirmed = true)
+    public static function login(array $credentials, $mustBeConfirmed = true)
     {
-        $remember = ( isset($input['remember']) ? $input['remember'] : false );
-        $loginAttribute = self::prv_extractIdentityFromArray( $input );
+        $remember = ( isset($credentials['remember']) ? $credentials['remember'] : false );
+        $loginAttribute = self::prv_extractIdentityFromArray( $credentials );
 
         if( ! self::prv_loginThrottling( $loginAttribute ) ) {
             return false;
@@ -67,15 +67,15 @@ class HelpUser
 
         if( $user ) 
         {
-            if (! $user->confirmed && $mustBeConfirmed) {
+            if( ! $user->confirmed && $mustBeConfirmed ) {
                 return false;
             }
 
-            if( ! isset($input['password']) ) {
-            	$input['password'] = null;
+            if( ! isset($credentials['password']) ) {
+            	$credentials['password'] = null;
         	}
 
-            if( ! Hash::check( $input['password'], $user->password ) ) {
+            if( ! Hash::check( $credentials['password'], $user->password ) ) {
                 return false;
             }
 
@@ -89,11 +89,13 @@ class HelpUser
 
     /**
      * Checks if the credentials has been throttled by too much failed login attempts
-     * @param string $loginAttribute The login identity.
+     * @param array $credentials Array with the user identity (email/username)
      * @return boolean True if the identity has reached the throttle_limit.
      */
-    public static function isThrottled( $loginAttribute )
+    public static function isThrottled( array $credentials )
     {
+    	$loginAttribute = self::prv_extractIdentityFromArray( $credentials );
+
         // Get the current count (but not increments it)
         $count = self::prv_countThrottle( $loginAttribute, 0 );
 
@@ -102,18 +104,20 @@ class HelpUser
 
     /**
      * Checks if the given credentials correponds to a user that exists but is not confirmed
-     * @param string $loginAttribute user identity (email/username)
+     * @param array $credentials Array with the user identity (email/username)
      * @return boolean True if exists but is not confirmed
      */
-    public static function existsButNotConfirmed( $loginAttribute )
+    public static function existsButNotConfirmed( array $credentials )
     {
+    	$loginAttribute = self::prv_extractIdentityFromArray( $credentials );
+
         $user = self::getUserByIdentity( $loginAttribute );
 
-        if ($user) 
+        if( $user )
         {
-        	$correctPassword = Hash::check(
-                isset( $identity['password']) ? $identity['password'] : null,
-                $user->password
+			$correctPassword = Hash::check(
+	                isset( $credentials['password']) ? $credentials['password'] : null,
+	                $user->password
             );
 
             return ( ! $user->confirmed && $correctPassword );
@@ -129,13 +133,13 @@ class HelpUser
      */
     public static function confirm( $code )
     {
-    	$user = \HelpUserModel::where( 'confirmation_code', '=', $code )->get()->first();
+    	$rules = \HelpUserModel::$rules;
+        $rules = array_diff(array_keys($rules), array('password_confirmation'));
 
-        if( $user ) {
-            return $user->confirm();
-        } else {
-            return false;
-        }
+		$user = \HelpUserModel::where( 'confirmation_code', '=', $code )->get()->first();
+        $user->confirmed = true;
+
+        return $user->updateUniques( $rules );
     }
 
 
@@ -170,139 +174,53 @@ class HelpUser
             'created_at'=> new \DateTime
         );
 
-        \DB::table('password_reminders')->insert( $values );
+        DB::table('password_reminders')->insert( $values );
 
-		$view_name = \Config::get('helpers::auth.email_reset_password');
-
-        Mail::send(
-            $view_name,
-            compact('user', 'token'),
-            function ($message) use ($email) {
+//TODO use Mail::queue o Mail::queueOn 
+            Mail::send(
+//            Config::get('helpers::auth.email_queue_name'),			// Queue name
+            Config::get('helpers::auth.email_view_reset_password'),	// Email view name
+            compact('user', 'token'),								// Email data
+            function ($message) use ($user) {
                 $message
-                    ->to( $email )
+                    ->to( $user->email )
                     ->subject( Lang::get('helpers::auth.email.password_reset.subject') );
             }
         );
 
-//TODO......................................................................................
-// REVISAR SI HACERLO CON UNA COLA
-/*
-        $this->app['mailer']->queueOn(
-            \Config::get('helpers::email_queue'),
-            \Config::get('helpers::email_reset_password'),
-            compact('user', 'token'),
-            function ($message) use ($user, $token, $lang) {
-                $message
-                    ->to($user->email, $user->username)
-                    ->subject( trans('helpers::confide.email.password_reset.subject'));
-            }
-        );*/
-
         return true;
     }
 
-
-//TODO......................................................................................
     /**
-     * Send email using the lang sentence as subject and the viewname
-     *
-     * @param mixed $subject_translation
-     * @param mixed $view_name
-     * @param array $params
-     * @return voi.
-     */
-    private static function prv_sendEmail( $subject_translation, $view_name, $params = array() )
-    {
-        if ( static::$app['config']->getEnvironment() == 'testing' )
-            return;
-
-//        static::fixViewHint();
-
-        $user = $this;
-
-        static::$app['mailer']->send($view_name, $params, function($m) use ($subject_translation, $user)
-        {
-            $m->to( $user->email )
-                ->subject( ConfideUser::$app['translator']->get($subject_translation) );
-        });
-    }
-
-    /**
-     * Change user password
-     *
-     * @param  $params
-     * @return string
-     */
-    public function resetPassword( $params )
-    {
-//TODO......................................................................................
-        $password = array_get($params, 'password', '');
-        $passwordConfirmation = array_get($params, 'password_confirmation', '');
-
-        $passwordValidators = array(
-            'password' => static::$rules['password'],
-            'password_confirmation' => static::$rules['password_confirmation'],
-        );
-        $user = static::$app['confide.repository']->model();
-        $user->unguard();
-        $user->fill(array(
-            'password' => $password,
-            'password_confirmation' => $passwordConfirmation,
-        ));
-        $user->reguard();
-        $validationResult = static::$app['confide.repository']->validate($user, $passwordValidators);
-
-        if ( $validationResult )
-        {
-            return static::$app['confide.repository']
-                ->changePassword( $this, static::$app['hash']->make($password) );
-        }
-        else{
-            return false;
-        }
-    }
-
-    /**
-     * Resets a password of a user. The $input['token'] will tell which user.
-     *
+     * Resets user password.
      * @param  array $input Array containing 'token', 'password' and 'password_confirmation' keys.
-     *
-     * @return  boolean Success
+     * @param  \MessageBag $errors Object with the validation errors
+     * @return bool Success
      */
-/*    public function resetPassword($input)
+    public static function resetPassword( array $input, &$errors=null )
     {
-//TODO......................................................................................
-        $result = false;
-        $user   = Confide::userByResetPasswordToken($input['token']);
+        $user = self::getUserByReminderToken( $input['token'] );
 
-        if ($user) {
-            $user->password              = $input['password'];
+        if( $user )
+        {
+            $user->password              = $input['password'];	// Ardent library will hash it
             $user->password_confirmation = $input['password_confirmation'];
-            $result = $this->save($user);
-        }
 
-        // If result is positive, destroy token
-        if ($result) {
-            Confide::destroyForgotPasswordToken($input['token']);
-        }
-
-        return $result;
-    }
-*/
-
-    /**
-     * Delete the record of the given token from 'password_reminders' table.
-     * @param string $token Token retrieved from a forgotPassword.
-     * @return boolean Success.
-     */
-    public static function deleteReminderToken( $token )
-    {        
-        $affected = \DB::table('password_reminders')
-			            ->where('token', '=', $token)
+	        if( $user->updateUniques() )
+	        {
+	            \DB::table('password_reminders')              	// Destroy token
+			            ->where('token', '=', $input['token'])
 			            ->delete();
 
-        return $affected > 0;
+			    return true;
+	        }
+        }
+
+        $errors = $user->errors();
+
+        return false;
     }
+
 
     //-------------------------------------------------------------------------
     //-------------------------------------------------------------------------
@@ -317,7 +235,7 @@ class HelpUser
      */
     public static function getUserByIdentity( $identityString )
     {
-    	if( empty($identityString) || ! is_string($identityString) ) 
+    	if( empty($identityString) || is_array($identityString) || is_object($identityString) )
     	{
             return null;
         }
@@ -334,7 +252,7 @@ class HelpUser
      */
     public static function getUserByEmail( $email )
     {
-    	if( empty($email) || ! is_string($email) ) 
+    	if( empty($email) || is_array($email) || is_object($email) )
     	{
             return null;
         }
@@ -354,14 +272,14 @@ class HelpUser
             			->subHours( Config::get('helpers::auth.password_reset_expiration', 7) )
             			->toDateTimeString();
 
-        $email = \DB::table('password_reminders')
+        $user = \DB::table('password_reminders')
             			->select('email')
             			->where('token', '=', $token)
             			->where('created_at', '>=', $oldestValidDate )
-            			->get()->first();
+            			->first();
 
-        if ($email) {
-            return self::getUserByEmail( $email );
+        if ($user) {
+            return self::getUserByEmail( $user->email );
         }
 
         return false;

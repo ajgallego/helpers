@@ -6,10 +6,8 @@ return array(
     |--------------------------------------------------------------------------
     | Login Attribute
     |--------------------------------------------------------------------------
-    |
     | Globally override the login attribute. For example, it allows to use 
-    | username or email as login attribute.
-    |
+    | email (default), username or other field as login attribute.
     */
     'login_attribute' => 'email',
 
@@ -17,10 +15,8 @@ return array(
     |--------------------------------------------------------------------------
     | Login Throttle
     |--------------------------------------------------------------------------
-    |
     | Defines how many login failed attempts may be done within
     | the 'throttle_time_period', which is in minutes.
-    |
     */
     'throttle_limit' => 5,
     'throttle_suspension_time' => 2, // minutes
@@ -29,11 +25,9 @@ return array(
     |--------------------------------------------------------------------------
     | Password reset expiration
     |--------------------------------------------------------------------------
-    |
-    | By default. A password reset request will expire after 7 hours. With the
+    | By default, a password reset request will expire after 7 hours. With the
     | line below you will be able to customize the duration of the reset
     | requests here.
-    |
     */
     'password_reset_expiration' => 7, // hours
 
@@ -64,32 +58,23 @@ return array(
 
     /*
     |--------------------------------------------------------------------------
-    | E-Mail queue
+    | E-Mail queue name
     |--------------------------------------------------------------------------
-    |
-    | Modify the line below to change which queue driver Confide uses to send
+    | Modify the line below to change which queue driver is used to send
     | e-mails.
-    |
     */
-    'email_queue'      => 'sync',
+    'email_queue_name'      => 'sync',
 
     /*
     |--------------------------------------------------------------------------
     | Email Views
     |--------------------------------------------------------------------------
-    |
-    | The VIEWS used to email messages for some Confide events:
-    |
-    | By default, the out of the box confide views are used
-    | but you can create your own forms and replace the view
-    | names here. For example
-    |
-    |  // To use app/views/email/confirmation.blade.php:
-    |
-    | 'email_account_confirmation' => 'email.confirmation'
-    |
-    |
+    | Views used to email messages for some events. Default views are used
+    | but you can create your own views and replace the view names here. 
+    | For example, to use "app/views/email/confirmation.blade.php" you have 
+    | to write: 
+    | 'email_view_account_confirmation' => 'email.confirmation'
     */
-    'email_reset_password' =>       'helpers::emails.auth.password_reset', // with $user and $token.
-    'email_account_confirmation' => 'helpers::emails.auth.account_confirmation', // with $user
+    'email_view_reset_password' =>       'helpers::emails.auth.password_reset',       // with $user and $token.
+    'email_view_account_confirmation' => 'helpers::emails.auth.account_confirmation', // with $user
 );
