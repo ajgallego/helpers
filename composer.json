@@ -1,5 +1,5 @@
 {
-    "name": "ajgallego/helpers",
+    "name": "ajgallego/laravel-helpers",
     "description": "A collection of PHP helpers for Laravel",
     "license": "BSD-3-Clause",
     "keywords": ["laravel", "php", "helpers"], 
