@@ -47,8 +47,8 @@ class HelpMenu
 			else
 			{
 				$submenusPattern = (isset($option['nopattern']) ? '' : '*' );
-	        	//$requestPattern = $_currentLocale . ( $option['url'] == '' ? '' : '/'. $option['url'] . $submenusPattern );
-	        	$requestPattern = $_currentLocale . $option['url'] . $submenusPattern;
+	        	        $requestPattern = $_currentLocale . ( $option['url'] == '' ? '' : '/'. $option['url'] . $submenusPattern );
+	        	        //$requestPattern = $_currentLocale . $option['url'] . $submenusPattern;
 
 	        	$isActive = \Request::is( $requestPattern ) ? ' active' : '';
 
