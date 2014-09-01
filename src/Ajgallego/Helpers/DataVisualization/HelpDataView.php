@@ -13,28 +13,21 @@ class HelpDataView
 	private $mFields       = array();
     private $mGroupClasses = array();
 	private $mButtons      = '';
-	private $mDataUri      = '';
-	private $mDataId       = '';
 
 	/**
 	* Private dataview constructor
-	* @param string $data_uri The uri to your resource, it is used to generate the button actions routes
 	*/
-	private function __construct( $_data_uri, $_resource_id ) 
+	private function __construct() 
 	{
-		$this->mDataUri = $_data_uri;
-		$this->mDataId = $_resource_id;
 		return $this;
 	}
 
 	/**
 	* Create a dataview from an Uri and a resource_id
-    * @param string $data_uri Used to generate the edit, delete and return buttons
-    * @param integer $resource_id Used to generate the edit and delete buttons
 	*/
-	public static function create( $_data_uri, $_resource_id )
+	public static function create()
 	{
-		return new HelpDataView( $_data_uri, $_resource_id );
+		return new HelpDataView();
 	}
 
     /**
@@ -89,9 +82,10 @@ class HelpDataView
     }
 
     /** 
-	 * Add a boolean value to the dataview
-     * @param boolean $value
+	 * Add a link to the dataview
      * @param string $label
+     * @param string $value 
+     * @param string $url
      */
     public function addLink($_label, $_value, $_url)
     {
@@ -103,9 +97,9 @@ class HelpDataView
 	 * Add a predefined button to modify the data
      * @param string $addClass Optionals parameter
      */
-    public function addButtonModify( $_addClass='' )
+    public function addButtonModify( $_uri, $_addClass='' )
     {
-		$this->mButtons .= \HelpActionButton::edit( \URL::route( $this->mDataUri.'.edit', $this->mDataId ) )
+		$this->mButtons .= \HelpActionButton::edit( $_uri )
                            ->addStyle('margin-right:10px')
                            ->addClass($_addClass);
 		return $this;
@@ -115,9 +109,9 @@ class HelpDataView
 	 * Add a predefined button to delete the data
      * @param string $addClass Optionals parameter
      */
-    public function addButtonDelete( $_addClass='' )
+    public function addButtonDelete( $_uri, $_addClass='' )
     {
-        $this->mButtons .= \HelpActionButton::delete( \URL::route( $this->mDataUri.'.destroy', $this->mDataId ) )
+        $this->mButtons .= \HelpActionButton::delete( $_uri )
                            ->addStyle('margin-right:10px')
                            ->addClass($_addClass);
 		return $this;
@@ -127,9 +121,9 @@ class HelpDataView
 	 * Add a predefined button to return to the list of data
      * @param string $addClass Optionals parameter
      */
-    public function addButtonReturn( $_addClass='' )
+    public function addButtonReturn( $_uri, $_addClass='' )
     {
-		$this->mButtons .= \HelpActionButton::back( \URL::route( $this->mDataUri.'.index' ) )
+		$this->mButtons .= \HelpActionButton::back( $_uri )
                            ->addStyle('margin-right:10px')
                            ->addClass($_addClass);
 		return $this;
