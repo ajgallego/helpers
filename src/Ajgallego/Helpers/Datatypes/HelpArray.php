@@ -137,7 +137,7 @@ class HelpArray
                         $diff[0][$key] = $value; 
                         $diff[1][$key] = $array2[$key]; 
                  } else { 
-                        $new = self::array_compare($value, $array2[$key]); 
+                        $new = self::arrayCompare($value, $array2[$key]); 
                         if ($new !== false) { 
                              if (isset($new[0])) $diff[0][$key] = $new[0]; 
                              if (isset($new[1])) $diff[1][$key] = $new[1]; 
