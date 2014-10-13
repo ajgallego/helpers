@@ -126,7 +126,9 @@ class HelpArray
     public static function arrayCompare( array $array1, array $array2 ) 
     { 
         $diff = false; 
-        
+        $array1 == null && $array1 = array();
+        $array2 == null && $array2 = array();
+
         // Left-to-right 
         foreach ($array1 as $key => $value) 
         { 
