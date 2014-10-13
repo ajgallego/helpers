@@ -123,7 +123,7 @@ class HelpArray
     * @param array $array2 Second input array to compare
     * @return Returns an array with the differencies or false if are identical.
     */
-    public static function arrayCompare( array $array1, array $array2 ) 
+    public static function arrayCompare( array $array1=null, array $array2=null )
     { 
         $diff = false; 
         $array1 == null && $array1 = array();
