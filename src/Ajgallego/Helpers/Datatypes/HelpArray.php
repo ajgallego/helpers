@@ -145,7 +145,7 @@ class HelpArray
                              if (isset($new[1])) $diff[1][$key] = $new[1]; 
                         }; 
                  }; 
-            } elseif ($array2[$key] !== $value) { 
+            } elseif ($array2[$key] != $value) { 
                  $diff[0][$key] = $value; 
                  $diff[1][$key] = $array2[$key]; 
             }; 
