@@ -92,7 +92,7 @@ class HelpNotification
         }
         else if( count( $messages ) == 1 )
         {
-            $strAlerts = '<span class"title"><i class="fa fa-fw '. $alertIcon .'"></i>'
+            $strAlerts = '<span class="title"><i class="fa fa-fw '. $alertIcon .'"></i>'
                          .   trans('notifications.'. $_type)
                          .'</span><p>'
                          .   $messages[0]
@@ -100,7 +100,7 @@ class HelpNotification
         }
         else 
         {
-            $strAlerts = '<span class"title"><i class="fa fa-fw '. $alertIcon .'"></i>'
+            $strAlerts = '<span class="title"><i class="fa fa-fw '. $alertIcon .'"></i>'
                          .   trans('notifications.many_notifications')
                          .   '</span><p><ul>';
 
