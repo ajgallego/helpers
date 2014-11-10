@@ -92,17 +92,17 @@ class HelpNotification
         }
         else if( count( $messages ) == 1 )
         {
-            $strAlerts = '<p><i class="fa '. $alertIcon .'"></i><strong>'
+            $strAlerts = '<span class"title"><i class="fa fa-fw '. $alertIcon .'"></i>'
                          .   trans('notifications.'. $_type)
-                         .   '</strong>: '
+                         .'</span><p>'
                          .   $messages[0]
                          .'</p>';
         }
         else 
         {
-            $strAlerts = '<p><i class="fa '. $alertIcon .'"></i><strong>'
+            $strAlerts = '<span class"title"><i class="fa fa-fw '. $alertIcon .'"></i>'
                          .   trans('notifications.many_notifications')
-                         .   '</strong>: <ul>';
+                         .   '</span><p><ul>';
 
             foreach( $messages as $message )
             {
