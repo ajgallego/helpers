@@ -8,7 +8,7 @@ class HelpNotification
 
 	private static $mNotificationsTypes = ['error', 'success', 'warning', 'info'];
 
-    private static $mNotificationFormat = '<div class="notification container alert alert-:type">
+    private static $mNotificationFormat = '<div class="notification alert alert-:type">
                                                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                                                 <div>:message</div>
                                            </div>';
