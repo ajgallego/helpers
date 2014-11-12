@@ -43,7 +43,7 @@ class HelpActionButton
     */
     public static function show( $_data_uri )
     {
-        return new HelpActionButton( '<i class="fa fa-eye"></i>', 
+        return new HelpActionButton( '<i class="fa fa-fw fa-eye"></i>', 
                                      trans('forms.actions.show'), 
                                      $_data_uri, 
                                      'btn btn-success' );
@@ -55,7 +55,7 @@ class HelpActionButton
     */
     public static function create( $_data_uri )
     {
-        return new HelpActionButton( '<i class="fa fa-plus-circle"></i>',
+        return new HelpActionButton( '<i class="fa fa-fw fa-plus-circle"></i>',
                                      trans('forms.actions.create'), 
                                      $_data_uri, 
                                      'btn btn-success' );
@@ -67,7 +67,7 @@ class HelpActionButton
     */
     public static function edit( $_data_uri )
     {
-        return new HelpActionButton( '<i class="fa fa-pencil"></i>', 
+        return new HelpActionButton( '<i class="fa fa-fw fa-pencil"></i>', 
                                      trans('forms.actions.edit'), 
                                      $_data_uri, 
                                      'btn btn-success' );
@@ -79,7 +79,7 @@ class HelpActionButton
     */
     public static function delete( $_data_uri )
     {
-        return (new HelpActionButton( '<i class="fa fa-trash-o"></i>', 
+        return (new HelpActionButton( '<i class="fa fa-fw fa-trash-o"></i>', 
                                      trans('forms.actions.delete'), 
                                      $_data_uri, 
                                      'btn btn-danger', 
@@ -92,7 +92,7 @@ class HelpActionButton
     */
     public static function back( $_data_uri )
     {
-        return new HelpActionButton( '<i class="fa fa-chevron-left"></i>', 
+        return new HelpActionButton( '<i class="fa fa-fw fa-chevron-left"></i>', 
                                      trans('forms.actions.return'), 
                                      $_data_uri, 
                                      'btn btn-default' );
