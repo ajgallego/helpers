@@ -44,10 +44,14 @@ class HelpDataView
 	 * Add a value to the dataview
      * @param string $label
      * @param string $value
+     * @param string $value_style Optional parameters
      */
-    public function add($_label, $_value)
+    public function add($_label, $_value, $_value_style='')
     {
-        $this->mFields[] = '<tr><th>'. $_label .'</th><td>'. $_value .'</td></tr>';
+        if( $_value_style != '' )
+            $_value_style = ' style="'. $_value_style .'"';
+
+        $this->mFields[] = '<tr><th>'. $_label .'</th><td'. $_value_style .'>'. $_value .'</td></tr>';
         return $this;
     }
 
@@ -55,11 +59,16 @@ class HelpDataView
 	 * Add a boolean value to the dataview
      * @param boolean $value
      * @param string $label
+     * @param string $value_style Optional parameters
      */
-    public function addBool($_label, $_value)
+    public function addBool($_label, $_value, $_value_style='')
     {
+        if( $_value_style != '' )
+            $_value_style = ' style="'. $_value_style .'"';
+
     	$boolValue = $_value ? '<i class="fa fa-check"></i>' : '<i class="fa fa-times"></i>';
-    	$this->mFields[] = '<tr><th>'. $_label .'</th><td>'. $boolValue .'</td></tr>';
+
+    	$this->mFields[] = '<tr><th>'. $_label .'</th><td'. $_value_style .'>'. $boolValue .'</td></tr>';
     	return $this;
     }
 
@@ -95,6 +104,7 @@ class HelpDataView
 
     /** 
 	 * Add a predefined button to modify the data
+     * @param string $_uri Button uri
      * @param string $addClass Optionals parameter
      */
     public function addButtonModify( $_uri, $_addClass='' )
@@ -107,6 +117,7 @@ class HelpDataView
 
 	/** 
 	 * Add a predefined button to delete the data
+     * @param string $_uri Button uri
      * @param string $addClass Optionals parameter
      */
     public function addButtonDelete( $_uri, $_addClass='' )
@@ -119,6 +130,7 @@ class HelpDataView
 
 	/** 
 	 * Add a predefined button to return to the list of data
+     * @param string $_uri Button uri
      * @param string $addClass Optionals parameter
      */
     public function addButtonReturn( $_uri, $_addClass='' )
@@ -131,8 +143,10 @@ class HelpDataView
 
     /** 
 	 * Add predefined buttons to the dataview
-     * @param string $uri The 
+     * @param string $icon
      * @param string $label
+     * @param string $uri The button uri
+     * @param string $addClass Optionals parameter
      */
     public function addButtonCustom( $_icon, $_label, $_uri, $_addClass='' )
     {
