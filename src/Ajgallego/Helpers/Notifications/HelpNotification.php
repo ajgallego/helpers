@@ -23,11 +23,7 @@ class HelpNotification
      */
     public static function __callStatic( $_method, $_arguments )
     {
-    	if( count($_arguments) == 0 && $_method == 'show' )
-        {
-            return self::prv_show();
-        }
-        else if( count($_arguments) == 1 && in_array( $_method, self::$mNotificationsTypes ) )
+    	if( count($_arguments) == 1 && in_array( $_method, self::$mNotificationsTypes ) )
         {
             return self::prv_add( $_method, $_arguments[0] );
         }
@@ -35,6 +31,21 @@ class HelpNotification
         {
 			throw new \Exception("HelpNotification Error: Unknown method or wrong number of arguments.", 1);
         }
+    }
+
+    /**
+     * Show notifications
+     */
+    public static function show()
+    {
+        $strNotifications = '';
+
+        foreach( self::$mNotificationsTypes as $type )
+        {                
+            $strNotifications .= self::prv_buildNotificationAlert( $type );
+        }
+ 
+        return $strNotifications;
     }
 
     /**
@@ -59,21 +70,6 @@ class HelpNotification
         }
         else
             \Session::push( self::$mSessionPrefix .'.'. $_type, $_messages );
-    }
-
-    /**
-     * Show notifications
-     */
-    private static function prv_show()
-    {
-        $strNotifications = '';
-
-        foreach( self::$mNotificationsTypes as $type )
-        {                
-            $strNotifications .= self::prv_buildNotificationAlert( $type );
-        }
- 
-        return $strNotifications;
     }
 
     /**
