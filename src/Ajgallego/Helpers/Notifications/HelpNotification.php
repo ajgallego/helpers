@@ -49,6 +49,21 @@ class HelpNotification
     }
 
     /**
+     * Get all notifications
+     */
+    public static function get()
+    {
+        $arrayNotifications = '';
+
+        foreach( self::$mNotificationsTypes as $type )
+        {                
+            $arrayNotifications[$type] = \Session::pull( self::$mSessionPrefix .'.'. $type, array() );
+        }
+ 
+        return $arrayNotifications;
+    }
+
+    /**
      * Add a notification
      */
     private static function prv_add( $_type, $_messages )
