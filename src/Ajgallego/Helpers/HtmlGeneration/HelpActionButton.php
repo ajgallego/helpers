@@ -104,12 +104,12 @@ class HelpActionButton
     * @param integer $_label The label of the button
     * @param string $_uri The action uri of the button
     */
-    public static function custom( $_icon, $_label, $_uri )
+    public static function custom( $_icon, $_label, $_uri, $_classes = 'btn btn-default' )
     {
         return new HelpActionButton( $_icon, 
                                      $_label, 
                                      $_uri, 
-                                     'btn btn-default' );
+                                     $_classes );
     }
 
     /** 
