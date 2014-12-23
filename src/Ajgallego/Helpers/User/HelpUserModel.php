@@ -50,14 +50,14 @@ class HelpUserModel extends Ardent implements UserInterface
 
         $status = parent::save( $rules, $customMessages, $options, $beforeSave, $afterSave );
 
-        if( $this->errors()->isEmpty() && ! $this->confirmed && \Config::get('laravel-helpers::auth.signup_email') == true )
+        if( $this->errors()->isEmpty() && ! $this->confirmed && \Config::get('helpers::auth.signup_email') == true )
         {
             $user = $this;
 
 //TODO use Mail::queue o Mail::queueOn 
             Mail::send(
-//                Config::get('laravel-helpers::auth.email_queue_name'),                // Queue name
-                Config::get('laravel-helpers::auth.email_view_account_confirmation'), // Email view name
+//                Config::get('helpers::auth.email_queue_name'),                // Queue name
+                Config::get('helpers::auth.email_view_account_confirmation'), // Email view name
                 compact('user'),                                              // Email data
                 function ($message) use ($user) {
                     $message
