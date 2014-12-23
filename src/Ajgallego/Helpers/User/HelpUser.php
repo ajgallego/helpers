@@ -99,7 +99,7 @@ class HelpUser
         // Get the current count (but not increments it)
         $count = self::prv_countThrottle( $loginAttribute, 0 );
 
-        return $count >= Config::get('helpers::auth.throttle_limit');
+        return $count >= Config::get('laravel-helpers::auth.throttle_limit');
     }
 
     /**
@@ -178,13 +178,13 @@ class HelpUser
 
 //TODO use Mail::queue o Mail::queueOn 
             Mail::send(
-//            Config::get('helpers::auth.email_queue_name'),			// Queue name
-            Config::get('helpers::auth.email_view_reset_password'),	// Email view name
+//            Config::get('laravel-helpers::auth.email_queue_name'),			// Queue name
+            Config::get('laravel-helpers::auth.email_view_reset_password'),	// Email view name
             compact('user', 'token'),								// Email data
             function ($message) use ($user) {
                 $message
                     ->to( $user->email )
-                    ->subject( Lang::get('helpers::auth.email.password_reset.subject') );
+                    ->subject( Lang::get('laravel-helpers::auth.email.password_reset.subject') );
             }
         );
 
@@ -240,7 +240,7 @@ class HelpUser
             return null;
         }
 
-    	$login_attribute = Config::get('helpers::auth.login_attribute');
+    	$login_attribute = Config::get('laravel-helpers::auth.login_attribute');
 
         return \HelpUserModel::where( $login_attribute, '=', $identityString )->get()->first();
     }
@@ -269,7 +269,7 @@ class HelpUser
     public static function getUserByReminderToken( $token )
     {
     	$oldestValidDate = \Carbon::now()
-            			->subHours( Config::get('helpers::auth.password_reset_expiration', 7) )
+            			->subHours( Config::get('laravel-helpers::auth.password_reset_expiration', 7) )
             			->toDateTimeString();
 
         $user = \DB::table('password_reminders')
@@ -540,7 +540,7 @@ class HelpUser
      */
     private static function prv_extractIdentityFromArray(array $input)
     {
-    	$login_attribute = Config::get('helpers::auth.login_attribute');
+    	$login_attribute = Config::get('laravel-helpers::auth.login_attribute');
 
         if( isset( $input[ $login_attribute ] ) )
         {
@@ -578,7 +578,7 @@ class HelpUser
     	// Increments and also retuns the current count
         $count = self::prv_countThrottle( $identityString );
 
-        if ($count >= Config::get('helpers::auth.throttle_limit')) {
+        if ($count >= Config::get('laravel-helpers::auth.throttle_limit')) {
             return false;
         }
 
@@ -604,7 +604,7 @@ class HelpUser
         $count = $count + $increments;
 
         if( $increments > 0 ) {
-        	$tst = Config::get('helpers::auth.throttle_suspension_time');
+        	$tst = Config::get('laravel-helpers::auth.throttle_suspension_time');
         	Cache::put('login_throttling:'.md5($identityString), $count, $tst);
         }
 

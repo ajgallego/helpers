@@ -75,6 +75,6 @@ return array(
     | to write: 
     | 'email_view_account_confirmation' => 'email.confirmation'
     */
-    'email_view_reset_password' =>       'helpers::emails.auth.password_reset',       // with $user and $token.
-    'email_view_account_confirmation' => 'helpers::emails.auth.account_confirmation', // with $user
+    'email_view_reset_password' =>       'laravel-helpers::emails.auth.password_reset',       // with $user and $token.
+    'email_view_account_confirmation' => 'laravel-helpers::emails.auth.account_confirmation', // with $user
 );
