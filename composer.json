@@ -19,7 +19,7 @@
             "src/migrations"
         ],
         "psr-0": {
-            "Ajgallego\\Helpers\\": "src/"
+            "Ajgallego\\Laravel-Helpers\\": "src/"
         }
     },
     "minimum-stability": "dev"
