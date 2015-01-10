@@ -1,4 +1,4 @@
-<?php namespace Ajgallego\Laravel-Helpers\DataCompression;
+<?php namespace Ajgallego\LaravelHelpers\DataCompression;
 
 /** 
 * Wraper class of ZipFile that uses a stream to store contents

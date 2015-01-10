@@ -1,11 +1,11 @@
-<?php namespace Ajgallego\Laravel-Helpers\User;
+<?php namespace Ajgallego\LaravelHelpers\User;
 
 use Illuminate\Auth\UserInterface;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Mail;
 use LaravelBook\Ardent\Ardent;
-use Ajgallego\Laravel-Helpers\User\HelpRoleModel;
+use Ajgallego\LaravelHelpers\User\HelpRoleModel;
 
 class HelpUserModel extends Ardent implements UserInterface 
 {
@@ -26,7 +26,7 @@ class HelpUserModel extends Ardent implements UserInterface
      */
     public function roles()
     {
-        return $this->belongsToMany('Ajgallego\Laravel-Helpers\User\HelpRoleModel', 'assigned_roles', 'user_id', 'role_id');
+        return $this->belongsToMany('Ajgallego\LaravelHelpers\User\HelpRoleModel', 'assigned_roles', 'user_id', 'role_id');
     }
 
     /**

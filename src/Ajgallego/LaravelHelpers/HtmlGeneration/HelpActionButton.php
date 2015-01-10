@@ -1,4 +1,4 @@
-<?php namespace Ajgallego\Laravel-Helpers\HtmlGeneration;
+<?php namespace Ajgallego\LaravelHelpers\HtmlGeneration;
 
 use Illuminate\Support\Facades\Form;
 

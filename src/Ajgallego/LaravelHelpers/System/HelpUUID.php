@@ -1,4 +1,4 @@
-<?php namespace Ajgallego\Laravel-Helpers\System;
+<?php namespace Ajgallego\LaravelHelpers\System;
 
 /**
 * UUID<br/>

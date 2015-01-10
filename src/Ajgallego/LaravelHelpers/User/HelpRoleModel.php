@@ -1,7 +1,7 @@
-<?php namespace Ajgallego\Laravel-Helpers\User;
+<?php namespace Ajgallego\LaravelHelpers\User;
 
 use LaravelBook\Ardent\Ardent;
-use Ajgallego\Laravel-Helpers\User\HelpUserModel;
+use Ajgallego\LaravelHelpers\User\HelpUserModel;
 
 class HelpRoleModel extends Ardent
 {
@@ -17,7 +17,7 @@ class HelpRoleModel extends Ardent
      */
     public function users()
     {
-        return $this->belongsToMany('\Ajgallego\Laravel-Helpers\User\HelpUserModel', 'assigned_roles', 'role_id', 'user_id');
+        return $this->belongsToMany('\Ajgallego\LaravelHelpers\User\HelpUserModel', 'assigned_roles', 'role_id', 'user_id');
     }
 
     /**
@@ -25,7 +25,7 @@ class HelpRoleModel extends Ardent
      */
     public function perms()
     {
-        return $this->belongsToMany('\Ajgallego\Laravel-Helpers\User\HelpPermissionModel', 'permission_role', 'role_id', 'permission_id');
+        return $this->belongsToMany('\Ajgallego\LaravelHelpers\User\HelpPermissionModel', 'permission_role', 'role_id', 'permission_id');
     }
 
     /**

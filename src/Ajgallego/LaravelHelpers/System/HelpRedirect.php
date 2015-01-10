@@ -1,4 +1,4 @@
-<?php namespace Ajgallego\Laravel-Helpers\System;
+<?php namespace Ajgallego\LaravelHelpers\System;
 
 use Illuminate\Support\Facades\Redirect;
 use Krucas\Notification\Facades\Notification;

@@ -1,4 +1,4 @@
-<?php namespace Ajgallego\Laravel-Helpers;
+<?php namespace Ajgallego\LaravelHelpers;
 
 use Illuminate\Database\Eloquent\Model;
 

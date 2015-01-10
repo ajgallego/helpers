@@ -1,4 +1,4 @@
-<?php namespace Ajgallego\Laravel-Helpers\Notifications;
+<?php namespace Ajgallego\LaravelHelpers\Notifications;
 
 trait HelpPersistentNotificationUserTrait
 {
@@ -7,7 +7,7 @@ trait HelpPersistentNotificationUserTrait
 	*/
     public function persistentNotifications()
     {
-    	// TODO Review route 'Ajgallego\Laravel-Helpers\Notifications\PersistentNotification'
+    	// TODO Review route 'Ajgallego\LaravelHelpers\Notifications\PersistentNotification'
     	// Review 'models\PersistentNotification'
         return $this->hasMany('\PersistentNotification');
     }

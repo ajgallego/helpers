@@ -1,4 +1,4 @@
-<?php namespace Ajgallego\Laravel-Helpers\Datatypes;
+<?php namespace Ajgallego\LaravelHelpers\Datatypes;
 
 /**
 * String helper class

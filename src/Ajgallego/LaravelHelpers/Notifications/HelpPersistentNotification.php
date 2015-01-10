@@ -1,4 +1,4 @@
-<?php namespace Ajgallego\Laravel-Helpers\Notifications;
+<?php namespace Ajgallego\LaravelHelpers\Notifications;
 
 class HelpPersistentNotification 
 {

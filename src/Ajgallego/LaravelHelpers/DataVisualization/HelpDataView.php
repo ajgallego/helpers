@@ -1,8 +1,8 @@
-<?php namespace Ajgallego\Laravel-Helpers\DataVisualization;
+<?php namespace Ajgallego\LaravelHelpers\DataVisualization;
 
 use Illuminate\View\Compilers\BladeCompiler;
 use Illuminate\Support\Facades\URL;
-use Ajgallego\Laravel-Helpers\HtmlGeneration;
+use Ajgallego\LaravelHelpers\HtmlGeneration;
 
 /**
 * Creates a table to display data. 

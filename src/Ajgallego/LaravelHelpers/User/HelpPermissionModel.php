@@ -1,4 +1,4 @@
-<?php namespace Ajgallego\Laravel-Helpers;
+<?php namespace Ajgallego\LaravelHelpers;
 
 use LaravelBook\Ardent\Ardent;
 
@@ -17,7 +17,7 @@ class HelpPermissionModel extends Ardent
      */
     public function roles()
     {
-        return $this->belongsToMany('Ajgallego\Laravel-Helpers\User\HelpRoleModel', 'permission_role', 'role_id', 'permission_id');
+        return $this->belongsToMany('Ajgallego\LaravelHelpers\User\HelpRoleModel', 'permission_role', 'role_id', 'permission_id');
     }
 
     /**

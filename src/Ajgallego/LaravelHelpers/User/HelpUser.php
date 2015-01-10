@@ -1,4 +1,4 @@
-<?php namespace Ajgallego\Laravel-Helpers\User;
+<?php namespace Ajgallego\LaravelHelpers\User;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
